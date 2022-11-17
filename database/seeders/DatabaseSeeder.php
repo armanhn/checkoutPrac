@@ -53,7 +53,8 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Product::factory()->create([
             'name' => 'PRACTICE TEST(INCLUDING $3 TAX)',
-            'price' => '48',
+            'price' => '470',
         ]);
+        // checking
     }
 }
