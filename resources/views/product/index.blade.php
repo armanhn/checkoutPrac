@@ -26,18 +26,18 @@
             <div class="row">
                 @foreach($products as $product)
                     <div class="col">
-                        <img src="{{$product->image}}" alt="" style="max-width:100%">
                         <h5>{{$product->name}}</h5>
                         <p>${{$product->price}}</p>
+                        <p>
+                            <form action="{{route('product.checkout')}}" method="post">
+                                @csrf
+                                <input name="product_id" type="hidden" value="{{$product->id}}">
+                                <button class="btn btn-primary">Checkout</button>
+                            </form>
+                            
+                        </p>
                     </div>
                 @endforeach
-                <p>
-                    <form action="{{route('product.checkout')}}" method="post">
-                        @csrf
-                        <button class="btn btn-primary">Checkout</button>
-                    </form>
-                    
-                </p>
             </div>
         </div>
         <!-- JavaScript Bundle with Popper -->

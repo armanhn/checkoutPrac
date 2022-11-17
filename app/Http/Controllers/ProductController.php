@@ -15,31 +15,27 @@ class ProductController extends Controller
         return view('product.index', compact('products'));
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
-
+        $product_id = $request->input('product_id');
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-        $products = Product::all();
-        $total_price = 0;
-        $lineItems = [];
-        foreach ($products as $product) {
-            $total_price += $product->price;
-            $lineItems[] = [
-                'price_data' => [
-                    'currency' => 'usd',
-                    'product_data' => [
-                        'name' => $product->name,
-                        'images' => [$product->image]
-
-                    ],
-                    'unit_amount' => $product->price * 100,
+        $product = Product::where('id', $product_id)->first();
+        $total_price = $product->price;
+        $lineItem = [];
+        $lineItem[] = [
+            'price_data' => [
+                'currency' => 'usd',
+                'product_data' => [
+                    'name' => $product->name,
                 ],
-                'quantity' => 1,
-            ];
-        }
+                'unit_amount' => $product->price * 100,
+            ],
+            'quantity' => 1,
+        ];
+
 
         $checkout_session = $stripe->checkout->sessions->create([
-            'line_items' => $lineItems,
+            'line_items' => $lineItem,
             'mode' => 'payment',
             'success_url' => route('success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('cancel', [], true),
@@ -117,12 +113,13 @@ class ProductController extends Controller
         switch ($event->type) {
             case 'payment_intent.succeeded':
                 $session = $event->data->object;
-                $sessionId = $session->id;
+
                 $order = Order::where('session_id', $session->id)->first();
 
                 if ($order && $order->status === 'unpaid') {
                     $order->status = 'paid';
                     $order->save();
+
                     //send email to customer
                 };
 
