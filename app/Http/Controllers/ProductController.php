@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEnrollmentRequest;
+use App\Models\Enrollment;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -14,9 +16,14 @@ class ProductController extends Controller
         $products = Product::all();
         return view('product.index', compact('products'));
     }
-
-    public function checkout(Request $request)
+    public function collect_data(Request $request)
     {
+        $product_id = $request->input('product_id');
+        return view('product.data', compact('product_id'));
+    }
+    public function checkout(CreateEnrollmentRequest $request)
+    {
+        Enrollment::insert($request->validated());
         $product_id = $request->input('product_id');
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
         $product = Product::where('id', $product_id)->first();

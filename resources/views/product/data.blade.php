@@ -24,20 +24,60 @@
     <body class="antialiased">
         <div class="container">
             <div class="row">
-                @foreach($products as $product)
-                    <div class="col">
-                        <h5>{{$product->name}}</h5>
-                        <p>${{$product->price}}</p>
-                        <p>
-                            <form action="{{route('product.data')}}" method="post">
-                                @csrf
-                                <input name="product_id" type="hidden" value="{{$product->id}}">
-                                <button class="btn btn-primary">Checkout</button>
-                            </form>
-                            
-                        </p>
+                <form action="{{route('product.checkout')}}" method="post">
+                    @csrf
+                    <div class="row">
+                        <div class="col-4"><div class="mb-3">
+                            <label for="" class="form-label">Student Name</label>
+                            <input type="text" name="student_name" id="student_name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Student Email</label>
+                            <input type="email" name="student_email" id="student_email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">School Attended</label>
+                            <input type="text" name="school_attended" id="school_attended" class="form-control" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Gender</label>
+                            <input type="text" name="gender" id="gender" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Date of Birth</label>
+                            <input type="text" name="dob" id="dob" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Student Cell</label>
+                            <input type="text" name="student_cell" id="student_cell" class="form-control"required>
+                        </div></div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Home Phone</label>
+                                <input type="text" name="home_phone" id="home_phone" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Address</label>
+                                <input type="text" name="address" id="address" class="form-control" required>
+                            </div>
+                            <h5><strong>Below mentioned information must be provided, if students are aged between 14-18</strong></h5>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Parent Name</label>
+                                <input type="text" name="parent_name" id="parent_name" class="form-control" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Parent Email</label>
+                                <input type="email" name="parent_email" id="parent_email" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Parent Cell</label>
+                                <input type="text" name="parent_cell" id="parent_cell" class="form-control">
+                            </div>
+                        </div>
                     </div>
-                @endforeach
+                    <input name="product_id" type="hidden" value="{{$product_id}}">
+                    <button name='submit' type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
         <!-- JavaScript Bundle with Popper -->
